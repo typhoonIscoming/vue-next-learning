@@ -5,6 +5,7 @@ const stateInitTwo = {
     address: '上海',
     detail: '浦东新区',
     arr: [1, 2, 3],
+    age: 18,
 }
 
 const newState = reactive(stateInitTwo)
@@ -20,6 +21,23 @@ const newState = reactive(stateInitTwo)
 //     newState.arr[2] = 4
 // }, 1000)
 
-effect(() => {
-    console.log(newState.address)
+// effect(() => {
+//     console.log(newState.address)
+// })
+
+const newAge = computed(() => {
+    console.log('重复取值，只会执行一次effect')
+    return newState.age * 2
 })
+effect(() => {
+    console.log(newAge.value)
+})
+
+console.log('我今年', newAge.value)
+console.log('她今年', newAge.value)
+console.log('他今年', newAge.value)
+
+newState.age = 200
+
+
+

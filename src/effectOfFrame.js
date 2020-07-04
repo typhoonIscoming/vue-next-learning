@@ -14,6 +14,20 @@ effect(() => {
     console.log('state.name=', state.name)
 })
 
+const computedAge = computed(() => {
+    console.log('age 的计算属性')
+    return '我今年' + state.age + '岁'
+})
+
+console.log('computedAge=', computedAge)
+// computedAge = 
+// effect: ƒ reactiveEffect(...args)
+// value: "我今年28岁"
+// __v_isRef: true
+// 在computed中打印日志，可以发现，外部不调用计算属性的值，是不会执行computed的
+// 只有外部使用了计算属性的value(computedAge.value)，才会执行
+// 说明这是一个懒effect(lazy为true的effect)
+
 setTimeout(() => {
     state.name = 'hang'
 }, 2000)
