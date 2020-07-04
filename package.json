@@ -1,0 +1,30 @@
+{
+    "name": "vue-next-learning",
+    "version": "1.0.0",
+    "description": "vue3 已经出来了，现在关注的热度也越来越高，新出来了很多新特性，并对TS进行了很好的支持。<br/>",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "dev": "node webpack.dev.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/typhoonIscoming/vue-next-learning.git"
+    },
+    "author": "Tse",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/typhoonIscoming/vue-next-learning/issues"
+    },
+    "homepage": "https://github.com/typhoonIscoming/vue-next-learning#readme",
+    "devDependencies": {
+        "html-webpack-plugin": "^4.3.0",
+        "webpack": "^4.43.0",
+        "webpack-cli": "^3.3.12",
+        "webpack-dev-server": "^3.11.0",
+        "webpack-merge": "^4.2.2"
+    },
+    "dependencies": {
+        "@vue/reactivity": "^3.0.0-beta.18"
+    }
+}
