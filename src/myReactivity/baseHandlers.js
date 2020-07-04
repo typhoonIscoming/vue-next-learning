@@ -1,5 +1,6 @@
 import { isObject, hasOwn, hasChanged } from '../../utils'
 import { reactive } from './reactive'
+import { track, trigger } from './effect';
 
 const get = createGeeter();
 const set = createSetter();
@@ -10,6 +11,7 @@ function createGeeter() {
         // 所以这里最好用proxy + reflect
         const result = Reflect.get(target, key, recevier)
         // todo..
+        track(target, 'get', key); // 依赖收集
         console.log('用户对这个值取值了', target, key)
         // 如果result这个值还是对象，就需要对这个值再次代理
         // 所以再次引入reactive
@@ -27,9 +29,11 @@ function createSetter() {
         const oldValue = target[key]
         const result = Reflect.get(target, key, value, recevier)
         if (!hasKey) {
-            console.log('属性新增操作', target, key)
+            trigger(target, 'add', key)
+            console.log('属性新增操作', target, key, value, oldValue)
             // 如果没有这个key，说明是对这个target的新增操作
         } else if (hasChanged(value, oldValue)) { // 判断新值和旧值是否一样的源代码中有考虑null的情况
+            trigger(target, 'set', key, value, oldValue)
             console.log('这是修改操作', target, key)
             // 执行 newState.arr[1] = 4
             // 打印结果如下
