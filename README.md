@@ -1,5 +1,10 @@
 vue3 已经出来了，现在关注的热度也越来越高，新出来了很多新特性，并对TS进行了很好的支持。<br/>
 
+本项目使用了webpack-dev-serve搭建。
+```javascript
+npm i; // 安装依赖
+npm run dev;
+```
 
 vue 采用了monorepo模式。<br>
 
