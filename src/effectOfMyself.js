@@ -29,9 +29,9 @@ const newAge = computed(() => {
     console.log('重复取值，只会执行一次effect')
     return newState.age * 2
 })
-effect(() => {
-    console.log(newAge.value)
-})
+const result = effect(() => {
+    console.log('hfufhowjfo', newAge.value)
+}, { lazy: true })
 
 console.log('我今年', newAge.value)
 console.log('她今年', newAge.value)

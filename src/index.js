@@ -1,6 +1,8 @@
-import './effectOfMyself'
+// import './effectOfMyself'
 
-// import './effectOfFrame'
+// import './effectOfDefine'
+
+import './effectOfFrame'
 
 
 

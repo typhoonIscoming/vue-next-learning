@@ -1,4 +1,4 @@
-import { isObject } from '../../utils'
+import { isObject, def, toRawType, makeMap } from '../../utils'
 
 import { mutableHandler } from './baseHandlers'
 
@@ -7,11 +7,24 @@ export function reactive(target) {
     return createReactiveObject(target, mutableHandler)
 }
 
+const isObservableType = makeMap('Object,Array,Map,Set,WeakMap,WeakSet');
+
+const canObserve = (value) => {
+    return (!value["__v_skip" /* SKIP */] &&
+        isObservableType(toRawType(value)) &&
+        !Object.isFrozen(value));
+};
+
 function createReactiveObject(target, baseHandler) {
     if (!isObject(target)) { // 如果不是对象，直接返回即可
         return target
     }
+    console.log('======', canObserve(target))
+    if (!canObserve(target)) {
+        return target;
+    }
     const obsered = new Proxy(target, baseHandler)
+    def(target, '__v_reactive', obsered)
     return obsered
 }
 

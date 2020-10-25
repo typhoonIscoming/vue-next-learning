@@ -6,21 +6,23 @@ import { reactive, effect, computed, ref } from '@vue/reactivity'
 
 const stateInit = {
     name: 'xie',
-    age: 28
+    age: 28,
+    // __v_reactive: 'hahah',
 }
 const state = reactive(stateInit) // 使用了proxy代理了
+const newState = reactive(stateInit)
+console.log('state=======', state, state === newState, newState)
+// effect(() => {
+//     console.log('state.name=', state.name)
+// })
 
-effect(() => {
-    console.log('state.name=', state.name)
-})
+// const computedAge = computed(() => {
+//     console.log('age 的计算属性')
+//     return '我今年' + state.age + '岁'
+// })
 
-const computedAge = computed(() => {
-    console.log('age 的计算属性')
-    return '我今年' + state.age + '岁'
-})
-
-console.log('computedAge=', computedAge)
-// computedAge = 
+// console.log('computedAge=', computedAge)
+// computedAge =    
 // effect: ƒ reactiveEffect(...args)
 // value: "我今年28岁"
 // __v_isRef: true
@@ -28,8 +30,8 @@ console.log('computedAge=', computedAge)
 // 只有外部使用了计算属性的value(computedAge.value)，才会执行
 // 说明这是一个懒effect(lazy为true的effect)
 
-setTimeout(() => {
-    state.name = 'hang'
-}, 2000)
+// setTimeout(() => {
+//     state.name = 'hang'
+// }, 2000)
 // 默认会执行一次，在两秒之后，再次输出state.name的值
 
