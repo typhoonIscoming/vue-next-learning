@@ -56,7 +56,7 @@ npm i @vue/reactivity --save // 这就是Vue的响应式模块，可以在任何
 
 > 说明：在运行项目时，只需要注释src/index.js中`import './effectOfMyself'` 或者 `import './effectOfFrame'`就能看到vue/reactivity的效果和自己实现的效果
 
-
+[segmentfault解析vue-next响应式](https://segmentfault.com/a/1190000023380448?utm_source=tag-newest)
 
 
 
