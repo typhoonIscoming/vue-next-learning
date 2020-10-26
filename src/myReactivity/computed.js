@@ -11,6 +11,7 @@ export function computed(getterOrOptions) {
         getter = getterOrOptions.get
         setter = getterOrOptions.set
     }
+    console.log('setter  ===', typeof setter)
     // computed是有缓存机制的，多次取同一个值，只会计算一遍
     // 实现的方法：
     let dirty = true; // 默认第一次取值是执行getter的
@@ -19,7 +20,7 @@ export function computed(getterOrOptions) {
     let runner = effect(getter, {
         lazy: true, // 懒加载
         computed: true, // 这里仅仅是一个标识，表明这是一个计算属性
-        schduler() {
+        scheduler() {
             if (!dirty) {
                 dirty = true;
                 // schduler的作用是计算属性的依赖发生改变时，执行这个方法schduler
@@ -36,7 +37,7 @@ export function computed(getterOrOptions) {
         // 源码中加了这两个属性
         __v_isRef: true,
         // expose effect so computed can be stopped
-        effect: runner,
+        // effect: runner,
         /******************************************* */
         get value() {
             if (dirty) {
@@ -51,6 +52,8 @@ export function computed(getterOrOptions) {
         },
         set value(newvalue) {
             setter(newvalue)
+            console.log('set computed value', newvalue)
+            console.log('setter', setter)
         }
     }
     return computed

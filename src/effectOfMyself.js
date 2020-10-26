@@ -25,19 +25,25 @@ const newState = reactive(stateInitTwo)
 //     console.log(newState.address)
 // })
 
-const newAge = computed(() => {
-    console.log('重复取值，只会执行一次effect')
+let newAge = computed(() => {
+    console.log('重复取值，只会执行一次effect', newState.age)
     return newState.age * 2
 })
-const result = effect(() => {
-    console.log('hfufhowjfo', newAge.value)
-}, { lazy: true })
+// const result = effect(() => {
+//     console.log('this is effect', newAge.value)
+// }, { lazy: false })
 
-console.log('我今年', newAge.value)
-console.log('她今年', newAge.value)
-console.log('他今年', newAge.value)
+effect(() => {
+    newState.age = 100
+    console.log('this is effect2', newState.age)
+})
 
-newState.age = 200
+
+setTimeout(() => {
+    newAge.value = 200
+    console.log('newState.age', newState.age)
+    console.log('computed newAge', newAge.value)
+}, 1000)
 
 
 

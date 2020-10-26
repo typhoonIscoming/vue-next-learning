@@ -2,17 +2,17 @@ import { isObject, hasOwn, hasChanged } from '../../utils'
 import { reactive } from './reactive'
 import { track, trigger } from './effect';
 
-const get = createGeeter();
+const get = createGeter();
 const set = createSetter();
 
-function createGeeter() {
+function createGeter() {
     return function getter(target, key, recevier) {
         // target[key]这样写并不好，因为可能这个值无法访问或访问不到
         // 所以这里最好用proxy + reflect
         const result = Reflect.get(target, key, recevier)
         // todo..
         track(target, 'get', key); // 依赖收集
-        console.log('用户对这个值取值了', target, key)
+        // console.log('用户对这个值取值了', target, key)
         // 如果result这个值还是对象，就需要对这个值再次代理
         // 所以再次引入reactive
         if (isObject(result)) {
@@ -27,7 +27,7 @@ function createSetter() {
         // 在这里需要增加一个判断，当前操作是增加还是修改一个值(对对象和数组而言),如果原来的值和新设置的值一样则什么都不做
         const hasKey = hasOwn(target, key)
         const oldValue = target[key]
-        const result = Reflect.get(target, key, value, recevier)
+        const result = Reflect.set(target, key, value, recevier)
         if (!hasKey) {
             trigger(target, 'add', key)
             console.log('属性新增操作', target, key, value, oldValue)
@@ -44,7 +44,7 @@ function createSetter() {
         }
 
         
-        console.log('对这个值进行了设置', target, key, value)
+        // console.log('对这个值进行了设置', target, key, value)
         // 在对数组push了一个值之后，会先push值时对数组做一个改变，再对数组的length做一次改变，而push的操作会自动改变length
         // 所以第二步改变length的长度就没有意义
         // 用户对这个值取值了 {address: "上海", detail: "浦东新区", arr: Array(3)} arr

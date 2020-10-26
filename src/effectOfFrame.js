@@ -10,18 +10,18 @@ const stateInit = {
     // __v_reactive: 'hahah',
 }
 const state = reactive(stateInit) // 使用了proxy代理了
-const newState = reactive(stateInit)
-console.log('state=======', state, state === newState, newState)
+// const newState = reactive(stateInit)
+// console.log('state=======', state, state === newState, newState)
 // effect(() => {
 //     console.log('state.name=', state.name)
 // })
 
-// const computedAge = computed(() => {
-//     console.log('age 的计算属性')
-//     return '我今年' + state.age + '岁'
-// })
+const computedAge = computed(() => {
+    console.log('age 的计算属性')
+    return state.age * 2
+})
 
-// console.log('computedAge=', computedAge)
+console.log('computedAge=', computedAge.value)
 // computedAge =    
 // effect: ƒ reactiveEffect(...args)
 // value: "我今年28岁"
@@ -30,8 +30,9 @@ console.log('state=======', state, state === newState, newState)
 // 只有外部使用了计算属性的value(computedAge.value)，才会执行
 // 说明这是一个懒effect(lazy为true的effect)
 
-// setTimeout(() => {
-//     state.name = 'hang'
-// }, 2000)
+setTimeout(() => {
+    state.age = 30
+    console.log('computedAge in settimout', computedAge.value)
+}, 2000)
 // 默认会执行一次，在两秒之后，再次输出state.name的值
 

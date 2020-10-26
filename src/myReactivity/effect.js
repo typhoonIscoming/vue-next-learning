@@ -17,6 +17,9 @@ const effectStack = [];
 function createReactiveEffect(fn, options) {
     const effect = function reactiveEffect() {
         // 防止数据更新造成死循环
+        if (!effect.active) {
+            return options.scheduler ? undefined : fn(...args);
+        }
         // 如在effect(() => { newState.num++ }),数据更新执行effect, 又更新，就造成死循环
         if (!effectStack.includes(effect)) {
             try{ // 因为执行fn时可能会报错
@@ -31,6 +34,7 @@ function createReactiveEffect(fn, options) {
     }
     effect.options = options;
     effect.id = uid++;
+    effect.active = true;
     effect.deps = []; // 依赖了哪些属性
     return effect
 }
@@ -76,6 +80,7 @@ export function track(target, type, key) {
 export function trigger(target, type, key, value, oldvalue) {
     const depsMap = targetMap.get(target)
     if(!depsMap) {
+        console.log('该对象还未收集')
         return
     }
     /************************************************************************************* */
@@ -118,14 +123,15 @@ export function trigger(target, type, key, value, oldvalue) {
         add(depsMap.get(Array.isArray(target) ? 'length' : ''))
     }
     const run = (effect) => {
-        if (effect.options.schduler) {
+        if (effect.options.scheduler) {
             console.log('执行schduler')
-            effect.options.schduler()
+            effect.options.scheduler()
         } else {
             console.log('执行effect')
             effect()
         }
     }
+    console.log(123)
     computedRunners.forEach(run)
     effects.forEach(run)
 }

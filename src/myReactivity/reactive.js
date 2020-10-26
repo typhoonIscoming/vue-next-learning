@@ -19,7 +19,7 @@ function createReactiveObject(target, baseHandler) {
     if (!isObject(target)) { // 如果不是对象，直接返回即可
         return target
     }
-    console.log('======', canObserve(target))
+    // console.log('======', canObserve(target))
     if (!canObserve(target)) {
         return target;
     }
