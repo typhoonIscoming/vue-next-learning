@@ -2,10 +2,10 @@ import { isObject, hasOwn, hasChanged } from '../../utils'
 import { reactive } from './reactive'
 import { track, trigger } from './effect';
 
-const get = createGeter();
+const get = createGetter();
 const set = createSetter();
 
-function createGeter() {
+function createGetter() {
     return function getter(target, key, recevier) {
         // target[key]这样写并不好，因为可能这个值无法访问或访问不到
         // 所以这里最好用proxy + reflect

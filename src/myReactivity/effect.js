@@ -3,7 +3,7 @@
 
 export function effect(fn, options = {}) {
     const effect = createReactiveEffect(fn, options)
-    if (!effect.lazy) {
+    if (!options.lazy) {
         effect() // 默认就要执行
     }
     return effect
@@ -15,7 +15,7 @@ let activeEffect;
 const effectStack = [];
 
 function createReactiveEffect(fn, options) {
-    const effect = function reactiveEffect() {
+    const effect = function reactiveEffect(...args) {
         // 防止数据更新造成死循环
         if (!effect.active) {
             return options.scheduler ? undefined : fn(...args);
@@ -25,8 +25,10 @@ function createReactiveEffect(fn, options) {
             try{ // 因为执行fn时可能会报错
                 effectStack.push(effect)
                 activeEffect = effect
-                return fn()
+                console.log('33333', +new Date())
+                return fn(...args)
             }finally{
+                console.log('4444', +new Date())
                 effectStack.pop()
                 activeEffect = effectStack[effectStack.length - 1]
             }
@@ -59,6 +61,7 @@ function createReactiveEffect(fn, options) {
 let targetMap = new WeakMap(); // 用法和Map一样，但是是弱引用，不会导致内存泄漏
 
 export function track(target, type, key) {
+    console.log('11111', +new Date())
     if (activeEffect === undefined) { // 说明取值不依赖于effect
         // 我们只让在effect方法中被依赖的属性去创建weakmap
         return
@@ -78,6 +81,7 @@ export function track(target, type, key) {
 }
 
 export function trigger(target, type, key, value, oldvalue) {
+    console.log('22222', +new Date())
     const depsMap = targetMap.get(target)
     if(!depsMap) {
         console.log('该对象还未收集')

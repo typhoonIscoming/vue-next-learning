@@ -9,7 +9,16 @@ const stateInit = {
     age: 28,
     // __v_reactive: 'hahah',
 }
+
+const city = {
+    name: 'shanghai',
+    chinenseName: '上海'
+}
+
 const state = reactive(stateInit) // 使用了proxy代理了
+
+const refCity = ref(city)
+console.log('ref', refCity)
 // const newState = reactive(stateInit)
 // console.log('state=======', state, state === newState, newState)
 // effect(() => {
