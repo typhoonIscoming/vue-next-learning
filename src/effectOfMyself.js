@@ -35,10 +35,17 @@ const newState = reactive(stateInitTwo)
 
 effect(() => {
     newState.age = 100
+    console.log('=====', newState.name)
     console.log('this is effect2', newState.age)
 })
 
+effect(() => {
+    console.log('22222=====', newState.name)
+})
 
+setTimeout(() => {
+    newState.name = 'xixi'
+}, 1000)
 
 
 
