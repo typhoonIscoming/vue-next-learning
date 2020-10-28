@@ -25,10 +25,10 @@ function createReactiveEffect(fn, options) {
             try{ // 因为执行fn时可能会报错
                 effectStack.push(effect)
                 activeEffect = effect
-                console.log('33333', +new Date())
+                // console.log('33333', +new Date())
                 return fn(...args)
             }finally{
-                console.log('4444', +new Date())
+                // console.log('4444', +new Date())
                 effectStack.pop()
                 activeEffect = effectStack[effectStack.length - 1]
             }
@@ -59,9 +59,9 @@ function createReactiveEffect(fn, options) {
 // 使用了map对应每个依赖
 
 let targetMap = new WeakMap(); // 用法和Map一样，但是是弱引用，不会导致内存泄漏
-
+let timer = 0;
 export function track(target, type, key) {
-    console.log('11111', +new Date())
+    // console.log('11111', +new Date())
     if (activeEffect === undefined) { // 说明取值不依赖于effect
         // 我们只让在effect方法中被依赖的属性去创建weakmap
         console.log('effect中的变量没有被依赖')
@@ -72,24 +72,25 @@ export function track(target, type, key) {
         targetMap.set(target, (depsMap = new Map()))
     }
     let dep = depsMap.get(key)
+    timer += 1
     console.log('dep = ', dep)
-    console.log('depsMap', depsMap)
+    console.log('depsMap1', depsMap)
     console.log('targetMap', targetMap)
     if (!dep) {
         depsMap.set(key, (dep = new Set()))
-        console.log('depsMap', depsMap)
+        console.log('depsMap2', depsMap)
     }
+    console.log('activeEffect1111', activeEffect.deps)
     if (!dep.has(activeEffect)) {
         dep.add(activeEffect)
         activeEffect.deps.push(dep)
+        console.log('activeEffect222', activeEffect.deps)
     }
 }
 
 export function trigger(target, type, key, value, oldvalue) {
-    console.log('22222', +new Date())
     const depsMap = targetMap.get(target)
     if(!depsMap) {
-        console.log('该对象还未收集')
         return
     }
     /************************************************************************************* */

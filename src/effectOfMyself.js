@@ -8,6 +8,11 @@ const stateInitTwo = {
     age: 18,
 }
 
+const pureObj = {
+    name: '北京',
+    detail: '大兴',
+}
+
 const newState = reactive(stateInitTwo)
 
 // console.log(newState); // 在页面上可以看到打印出：Proxy {address: "上海", detail: "浦东新区"},说明已经代理成功
@@ -21,9 +26,10 @@ const newState = reactive(stateInitTwo)
 //     newState.arr[2] = 4
 // }, 1000)
 
-// effect(() => {
-//     console.log(newState.address)
-// })
+effect(() => {
+    console.log('pureObj', pureObj.name)
+    console.log(newState.address, newState.age)
+})
 
 // let newAge = computed(() => {
 //     console.log('重复取值，只会执行一次effect', newState.age)
@@ -33,18 +39,18 @@ const newState = reactive(stateInitTwo)
 //     console.log('this is effect', newAge.value)
 // }, { lazy: false })
 
-effect(() => {
-    newState.age = 100
-    console.log('=====', newState.name)
-    console.log('this is effect2', newState.age)
-})
+// effect(() => {
+//     newState.age = 100
+//     console.log('=====', newState.name)
+//     console.log('this is effect2', newState.age)
+// })
 
-effect(() => {
-    console.log('22222=====', newState.name)
-})
+// effect(() => {
+//     console.log('22222=====', newState.name)
+// })
 
 setTimeout(() => {
-    newState.name = 'xixi'
+    newState.address = '成都'
 }, 1000)
 
 
