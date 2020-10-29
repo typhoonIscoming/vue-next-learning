@@ -73,7 +73,7 @@ export function track(target, type, key) {
     }
     let dep = depsMap.get(key)
     timer += 1
-    console.log('dep = ', dep)
+    console.log('target = ', target)
     console.log('depsMap1', depsMap)
     console.log('targetMap', targetMap)
     if (!dep) {

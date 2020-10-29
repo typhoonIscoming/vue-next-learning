@@ -60,7 +60,7 @@ npm i @vue/reactivity --save // 这就是Vue的响应式模块，可以在任何
 
 [vue3响应式源码解析](https://www.it610.com/article/1280219960160829440.htm)
 
-
+[vue3核心过程解析](https://www.it610.com/article/1269443923428806656.htm)
 
 
 
