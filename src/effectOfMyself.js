@@ -15,6 +15,14 @@ const pureObj = {
 
 const newState = reactive(stateInitTwo)
 
+let newvalue = ref(0)
+
+console.log('newvalue', newvalue)
+
+const newAge = computed(() => {
+    return newState.age * 5
+})
+
 // console.log(newState); // 在页面上可以看到打印出：Proxy {address: "上海", detail: "浦东新区"},说明已经代理成功
 
 // 代理复杂数据类型 arr: []
@@ -28,7 +36,8 @@ const newState = reactive(stateInitTwo)
 
 effect(() => {
     console.log('pureObj', pureObj.name)
-    console.log(newState.address, newState.age)
+    console.log('newState.age=======', newState.age)
+    console.log('newvalue.value========', newvalue.value)
 })
 
 // let newAge = computed(() => {
@@ -50,7 +59,8 @@ effect(() => {
 // })
 
 setTimeout(() => {
-    newState.address = '成都'
+    newvalue.value = 2
+    newAge.value = 100
 }, 1000)
 
 

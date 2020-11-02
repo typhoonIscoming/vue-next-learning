@@ -25,9 +25,21 @@ console.log('ref', refCity)
 //     console.log('state.name=', state.name)
 // })
 
-const computedAge = computed(() => {
-    console.log('age 的计算属性')
-    return state.age * 2
+const computedAge = computed({
+    get() {
+        return state.age
+    },
+    set(val) {
+        console.log('hsssjsjsjs', val)
+    }
+})
+
+const newAge = computed(() => {
+    return state.age * 3
+})
+
+effect(() => {
+    console.log('=====computedAge', computedAge.value)
 })
 
 console.log('computedAge=', computedAge.value)
@@ -41,6 +53,8 @@ console.log('computedAge=', computedAge.value)
 
 setTimeout(() => {
     state.age = 30
+    computedAge.value = 200
+    newAge.value = 400
     console.log('computedAge in settimout', computedAge.value)
 }, 2000)
 // 默认会执行一次，在两秒之后，再次输出state.name的值

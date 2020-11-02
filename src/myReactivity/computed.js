@@ -6,7 +6,9 @@ export function computed(getterOrOptions) {
     let setter;
     if (isFunction(getterOrOptions)) {
         getter = getterOrOptions
-        setter = () => {} // setter设置为空对象
+        setter = () => {
+            console.warn('Write operation failed: computed value is readonly')
+        } // setter设置为空对象
     } else {
         getter = getterOrOptions.get
         setter = getterOrOptions.set

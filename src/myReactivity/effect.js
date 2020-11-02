@@ -25,10 +25,8 @@ function createReactiveEffect(fn, options) {
             try{ // 因为执行fn时可能会报错
                 effectStack.push(effect)
                 activeEffect = effect
-                // console.log('33333', +new Date())
                 return fn(...args)
             }finally{
-                // console.log('4444', +new Date())
                 effectStack.pop()
                 activeEffect = effectStack[effectStack.length - 1]
             }
