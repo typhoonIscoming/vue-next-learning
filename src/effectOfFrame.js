@@ -7,18 +7,18 @@ import { reactive, effect, computed, ref } from '@vue/reactivity'
 const stateInit = {
     name: 'xie',
     age: 28,
-    // __v_reactive: 'hahah',
 }
 
 const city = {
     name: 'shanghai',
-    chinenseName: '上海'
+    chinenseName: '上海',
+    age: 30,
 }
 
 const state = reactive(stateInit) // 使用了proxy代理了
 
-const refCity = ref(city)
-console.log('ref', refCity)
+// const refCity = ref(city)
+// console.log('ref', refCity)
 // const newState = reactive(stateInit)
 // console.log('state=======', state, state === newState, newState)
 // effect(() => {
@@ -30,19 +30,19 @@ const computedAge = computed({
         return state.age
     },
     set(val) {
+        state.age = val
         console.log('hsssjsjsjs', val)
     }
 })
 
-const newAge = computed(() => {
-    return state.age * 3
-})
+// const newAge = computed(() => {
+//     return state.age * 3
+// })
 
 effect(() => {
     console.log('=====computedAge', computedAge.value)
 })
 
-console.log('computedAge=', computedAge.value)
 // computedAge =    
 // effect: ƒ reactiveEffect(...args)
 // value: "我今年28岁"
@@ -52,9 +52,7 @@ console.log('computedAge=', computedAge.value)
 // 说明这是一个懒effect(lazy为true的effect)
 
 setTimeout(() => {
-    state.age = 30
     computedAge.value = 200
-    newAge.value = 400
     console.log('computedAge in settimout', computedAge.value)
 }, 2000)
 // 默认会执行一次，在两秒之后，再次输出state.name的值
