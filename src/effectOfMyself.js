@@ -8,43 +8,44 @@ const stateInitTwo = {
     age: 18,
 }
 
+const pureObj = {
+    name: '北京',
+    detail: '大兴',
+    age: 20,
+}
+
 const newState = reactive(stateInitTwo)
 
-// console.log(newState); // 在页面上可以看到打印出：Proxy {address: "上海", detail: "浦东新区"},说明已经代理成功
+let newvalue = ref(0)
 
-// 代理复杂数据类型 arr: []
-// console.log(newState.arr);
-// 对arr的取值判断如果是复杂数据类型，再次进行代理之后
-// 打印的值为：Proxy {0: 1, 1: 2, 2: 3}
 
-// setTimeout(() => {
-//     newState.arr[2] = 4
-// }, 1000)
-
-// effect(() => {
-//     console.log(newState.address)
-// })
-
-// let newAge = computed(() => {
-//     console.log('重复取值，只会执行一次effect', newState.age)
-//     return newState.age * 2
-// })
-// const result = effect(() => {
-//     console.log('this is effect', newAge.value)
-// }, { lazy: false })
-
-effect(() => {
-    newState.age = 100
-    console.log('=====', newState.name)
-    console.log('this is effect2', newState.age)
+const newAge = computed({
+    get() {
+        return newState.age * 5
+    },
+    set(val) {
+        console.log('set reactive data newSate')
+        newState.age = val
+    },
 })
 
 effect(() => {
-    console.log('22222=====', newState.name)
+    console.log('newvalue---------', newvalue.value)
+    // console.log('pureObj', pureObj.name)
+    // console.log('newState.age=======', newState.age)
+    // console.log('newvalue.value========', newvalue.value)
+})
+effect(() => {
+    console.log('newvalue+++++++', newvalue.value)
+    // console.log('pureObj', pureObj.name)
+    // console.log('newState.age=======', newState.age)
+    // console.log('newvalue.value========', newvalue.value)
 })
 
 setTimeout(() => {
-    newState.name = 'xixi'
+    newvalue.value = 2
+    console.log('newAge222222 ========', newvalue.value)
+    // pureObj.age = 30
 }, 1000)
 
 

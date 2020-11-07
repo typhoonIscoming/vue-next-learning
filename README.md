@@ -58,9 +58,9 @@ npm i @vue/reactivity --save // 这就是Vue的响应式模块，可以在任何
 
 [segmentfault解析vue-next响应式](https://segmentfault.com/a/1190000023380448?utm_source=tag-newest)
 
+[vue3响应式源码解析](https://www.it610.com/article/1280219960160829440.htm)
 
-
-
+[vue3核心过程解析](https://www.it610.com/article/1269443923428806656.htm)
 
 
 

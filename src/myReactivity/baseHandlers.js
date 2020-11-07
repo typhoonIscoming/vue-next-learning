@@ -52,7 +52,7 @@ function createSetter() {
         // baseHandlers.js:13 用户对这个值取值了 (3) [1, 2, 3] length
         // baseHandlers.js:26 对这个值进行了设置 (3) [1, 2, 3] 3 4
         // baseHandlers.js:26 对这个值进行了设置 (3) [1, 2, 3] length 4
-        return result || true
+        return result
     }
 }
 

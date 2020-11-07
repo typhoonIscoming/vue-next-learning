@@ -22,11 +22,14 @@ function createReactiveEffect(fn, options) {
         }
         // 如在effect(() => { newState.num++ }),数据更新执行effect, 又更新，就造成死循环
         if (!effectStack.includes(effect)) {
+            console.log(666666, options)
             try{ // 因为执行fn时可能会报错
                 effectStack.push(effect)
                 activeEffect = effect
+                console.log('effectStac11111111k', effectStack)
                 return fn(...args)
             }finally{
+                console.log('effectStack22222222', effectStack)
                 effectStack.pop()
                 activeEffect = effectStack[effectStack.length - 1]
             }
@@ -57,9 +60,9 @@ function createReactiveEffect(fn, options) {
 // 使用了map对应每个依赖
 
 let targetMap = new WeakMap(); // 用法和Map一样，但是是弱引用，不会导致内存泄漏
-
+let timer = 0;
 export function track(target, type, key) {
-    console.log('11111', +new Date())
+    console.log('77777777', +new Date(), key, target)
     if (activeEffect === undefined) { // 说明取值不依赖于effect
         // 我们只让在effect方法中被依赖的属性去创建weakmap
         console.log('effect中的变量没有被依赖')
@@ -70,80 +73,80 @@ export function track(target, type, key) {
         targetMap.set(target, (depsMap = new Map()))
     }
     let dep = depsMap.get(key)
-    console.log('dep = ', dep)
-    console.log('depsMap', depsMap)
-    console.log('targetMap', targetMap)
+    timer += 1
+    // console.log('target = ', target)
+    // console.log('depsMap1', depsMap)
+    // console.log('targetMap', targetMap)
     if (!dep) {
         depsMap.set(key, (dep = new Set()))
-        console.log('depsMap', depsMap)
+        // console.log('depsMap2', depsMap)
     }
+    // console.log('activeEffect1111', activeEffect.deps)
     if (!dep.has(activeEffect)) {
         dep.add(activeEffect)
-        activeEffect.depss.push(dep)
+        activeEffect.deps.push(dep)
+        // console.log('activeEffect222', activeEffect.deps)
     }
 }
 
 export function trigger(target, type, key, value, oldvalue) {
-    // console.log('22222', +new Date())
     const depsMap = targetMap.get(target)
     if(!depsMap) {
-        console.log('该对象还未收集')
         return
     }
+    console.log(555555555)
     /************************************************************************************* */
     // 这里已经实现了effect的
-    const run = (effects) => {
-        console.log('effect =========', effects)
-        if (effects) {
-            effects.forEach(effect => {
-                effect()
-            });
-        }
-    }
-    if (key !== null) {
-        run(depsMap.get(key))
-        console.log('trigger depsMap', depsMap)
-    }
-    if (type === 'add') { // 对数组新增属性，会触发length对应的依赖，在取值时，会对length属性依赖收集
-        run(depsMap.get(Array.isArray(target) ? 'length' : ''))
-    }
+    // const run = (effects) => {
+    //     // console.log('effect =========', effects)
+    //     if (effects) {
+    //         effects.forEach(effect => {
+    //             effect()
+    //         });
+    //     }
+    // }
+    // if (key !== null) {
+    //     run(depsMap.get(key))
+    //     // console.log('trigger depsMap', depsMap)
+    // }
+    // if (type === 'add') { // 对数组新增属性，会触发length对应的依赖，在取值时，会对length属性依赖收集
+    //     run(depsMap.get(Array.isArray(target) ? 'length' : ''))
+    // }
     /************************************************************************************* */
 
     // 区别于computed做的改造
     // 计算属性要优先于effect执行，因为我们要先计算一个值出来再在effect中拿这个值。所以这里设置两个队列
-    // const effects = new Set();
-    // const computedRunners = new Set();
+    const effects = new Set();
+    const computedRunners = new Set();
 
-    // const add = (effectsToAdd) => {
-    //     console.log('effectsToAdd', effectsToAdd)
-    //     if (effectsToAdd) {
-    //         effectsToAdd.forEach(effect => {
-    //             if (effect.options.computed) {
-    //                 computedRunners.add(effect)
-    //             } else {
-    //                 effects.add(effect)
-    //             }
-    //         })
-    //     }
-    // }
-    // if (key !== null) {
-    //     add(depsMap.get(key))
-    // }
-    // if (type === 'add') { // 对数组新增属性，会触发length对应的依赖，在取值时，会对length属性依赖收集
-    //     add(depsMap.get(Array.isArray(target) ? 'length' : ''))
-    // }
-    // const run = (effect) => {
-    //     if (effect.options.scheduler) {
-    //         console.log('执行schduler')
-    //         effect.options.scheduler()
-    //     } else {
-    //         console.log('执行effect')
-    //         effect()
-    //     }
-    // }
-    // console.log(123)
-    // computedRunners.forEach(run)
-    // effects.forEach(run)
+    const add = (effectsToAdd) => {
+        if (effectsToAdd) {
+            effectsToAdd.forEach(effect => {
+                if (effect.options.computed) {
+                    computedRunners.add(effect)
+                } else {
+                    effects.add(effect)
+                }
+            })
+        }
+    }
+    if (key !== null) {
+        add(depsMap.get(key))
+    }
+    if (type === 'add') { // 对数组新增属性，会触发length对应的依赖，在取值时，会对length属性依赖收集
+        add(depsMap.get(Array.isArray(target) ? 'length' : ''))
+    }
+    const run = (effect) => {
+        if (effect.options.scheduler) {
+            console.log('执行schduler')
+            effect.options.scheduler()
+        } else {
+            console.log('执行effect')
+            effect()
+        }
+    }
+    computedRunners.forEach(run)
+    effects.forEach(run)
 }
 
 
