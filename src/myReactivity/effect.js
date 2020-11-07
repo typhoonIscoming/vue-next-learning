@@ -25,10 +25,8 @@ function createReactiveEffect(fn, options) {
             try{ // 因为执行fn时可能会报错
                 effectStack.push(effect)
                 activeEffect = effect
-                console.log('33333', +new Date())
                 return fn(...args)
             }finally{
-                console.log('4444', +new Date())
                 effectStack.pop()
                 activeEffect = effectStack[effectStack.length - 1]
             }
@@ -37,7 +35,7 @@ function createReactiveEffect(fn, options) {
     effect.options = options;
     effect.id = uid++;
     effect.active = true;
-    effect.deps = []; // 依赖了哪些属性
+    effect.depss = []; // 依赖了哪些属性
     return effect
 }
 
@@ -81,12 +79,12 @@ export function track(target, type, key) {
     }
     if (!dep.has(activeEffect)) {
         dep.add(activeEffect)
-        activeEffect.deps.push(dep)
+        activeEffect.depss.push(dep)
     }
 }
 
 export function trigger(target, type, key, value, oldvalue) {
-    console.log('22222', +new Date())
+    // console.log('22222', +new Date())
     const depsMap = targetMap.get(target)
     if(!depsMap) {
         console.log('该对象还未收集')
