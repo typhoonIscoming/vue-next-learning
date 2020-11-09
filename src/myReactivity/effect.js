@@ -26,7 +26,6 @@ function createReactiveEffect(fn, options) {
             try{ // 因为执行fn时可能会报错
                 effectStack.push(effect)
                 activeEffect = effect
-                console.log('effectStac11111111k', effectStack)
                 return fn(...args)
             }finally{
                 console.log('effectStack22222222', effectStack)
@@ -138,7 +137,7 @@ export function trigger(target, type, key, value, oldvalue) {
     }
     const run = (effect) => {
         if (effect.options.scheduler) {
-            console.log('执行schduler')
+            console.log('执行schduler', effect)
             effect.options.scheduler()
         } else {
             console.log('执行effect')

@@ -45,7 +45,7 @@ export function computed(getterOrOptions) {
         get value() {
             if (dirty) {
                 value = runner(); // 这里的runner就是effect中的createReactiveEffect
-                console.log('computed value===44444', value)
+                console.log('computed value===44444', runner)
                 dirty = false
             }
             // 对计算属性的取值是取值value, 如：newage = computed(() => { return newState.age * 2 })
