@@ -37,7 +37,7 @@ function createReactiveEffect(fn, options) {
     effect.options = options;
     effect.id = uid++;
     effect.active = true;
-    effect.depss = []; // 依赖了哪些属性
+    effect.deps = []; // 依赖了哪些属性
     return effect
 }
 

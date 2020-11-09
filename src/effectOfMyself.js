@@ -30,12 +30,13 @@ const newAge = computed({
     },
 })
 
-effect(() => {
+const anEffect = effect(() => {
     console.log('newvalue---------', newAge.value)
     // console.log('pureObj', pureObj.name)
     // console.log('newState.age=======', newState.age)
     // console.log('newvalue.value========', newvalue.value)
 })
+console.log('anEffect', anEffect)
 effect(() => {
     console.log('newvalue+++++++', newAge.value)
     // console.log('pureObj', pureObj.name)
