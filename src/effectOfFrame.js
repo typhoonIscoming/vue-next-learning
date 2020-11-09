@@ -17,6 +17,10 @@ const city = {
 
 const state = reactive(stateInit) // 使用了proxy代理了
 
+effect(() => {
+    console.log('state.age', state.age)
+    console.log('state.age', state)
+})
 // const refCity = ref(city)
 // console.log('ref', refCity)
 // const newState = reactive(stateInit)
