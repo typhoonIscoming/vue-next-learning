@@ -63,7 +63,29 @@ npm i @vue/reactivity --save // 这就是Vue的响应式模块，可以在任何
 [vue3核心过程解析](https://www.it610.com/article/1269443923428806656.htm)
 
 
+## ReactiveFlags  是一个枚举值
 
+```javascript
+export const enum ReactiveFlags {
+    skip = '__v_skip',
+    isReactive = '__v_isReactive',
+    isReadonly = '__v_isReadonly',
+    raw = '__v_raw',
+    reactive = '__v_reactive',
+    readonly = '__v_readonly'
+}
+// 它有什么用呢？举个例子，我们要定义一个不可被代理的对象：
+import { ReactiveFlags, reactive, isReactive } from '@vue/reactivity'
+const obj = {
+    [ReactiveFlags.skip]: true
+}
+const proxyObj = reactive(obj)
+console.log(isReactive(proxyObj)) // false
+// markRaw函数就是使用类似的方式实现的
+// 代理对象会通过 ReactiveFlags.raw 引用原始对象
+// 原始对象会通过 ReactiveFlags.reactive 或 ReactiveFlags.readonly 引用代理对象
+// 代理对象根据它是 reactive 或 readonly 的， 将 ReactiveFlags.isReactive 或 ReactiveFlags.isReadonly 属性值设置为true。
+```
 
 
 
